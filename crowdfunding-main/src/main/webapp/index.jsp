@@ -12,6 +12,7 @@
     <title>Title</title>
 </head>
 <body>
-<a href="${pageContext.request.contextPath}/test.do">test</a>
+
+<jsp:forward page="/index.htm"></jsp:forward>
 </body>
 </html>

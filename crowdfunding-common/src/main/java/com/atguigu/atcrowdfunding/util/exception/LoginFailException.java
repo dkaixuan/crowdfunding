@@ -1,4 +1,9 @@
 package com.atguigu.atcrowdfunding.util.exception;
 
-public class LoginFailException {
+public class LoginFailException extends RuntimeException {
+
+    public LoginFailException(String message) {
+        super(message);
+
+    }
 }

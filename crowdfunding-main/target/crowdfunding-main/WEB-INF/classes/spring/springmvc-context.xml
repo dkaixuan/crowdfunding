@@ -8,13 +8,13 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
     <!-- use-default-filters="false" 必须要配 不配事务有异常-->
-    <context:component-scan base-package="com.atguigu.atcrowdfunding*" use-default-filters="false">
+    <context:component-scan base-package="com.atguigu.atcrowdfunding.*" use-default-filters="false">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
 
     <!-- 启用注解功能 -->
-    <context:annotation-config />
+    <context:annotation-config/>
 
     <!-- 字符串字符编码转换 -->
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" >
@@ -39,14 +39,15 @@
         <property name="suffix" value=".jsp"></property>
     </bean>
     
-    <bean id="exceptionResolver"  
-        class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">  
-        <property name="exceptionMappings">  
-            <props>
-                <prop key="java.lang.Exception">error/error</prop>
-            </props>  
-        </property>  
-    </bean>
+<!--    <bean id="exceptionResolver"-->
+<!--        class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">-->
+<!--        <property name="exceptionMappings">-->
+<!--            <props>-->
+<!--                <prop key="java.lang.Exception">error/error</prop>-->
+<!--                <prop key="com.atguigu.atcrowdfunding.util.exception.LoginFailException">login</prop>-->
+<!--            </props>-->
+<!--        </property>-->
+<!--    </bean>-->
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" p:defaultEncoding="UTF-8">
         <property name="maxUploadSize" value="2097152"/>

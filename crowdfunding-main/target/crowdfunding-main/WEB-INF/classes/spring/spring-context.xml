@@ -9,6 +9,12 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
+	<!--配置一个可以执行批量的sqlsession-->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
+		<constructor-arg name="executorType" value="BATCH"></constructor-arg>
+	</bean>
+
 	<context:component-scan base-package="com.atguigu.atcrowdfunding.*">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
@@ -31,7 +37,7 @@
 	    <property name="dataSource" ref="dataSource"></property>
 	    <property name="mapperLocations">
 	        <list>
-	            <value>classpath*:mybatis/mapper-*.xml</value>
+	            <value>classpath*:mybatis/*Mapper.xml</value>
 	        </list>
 	    </property>
 	</bean>
