@@ -20,8 +20,7 @@
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.atguigu.atcrowdfunding.bean.Permission" >
     update t_permission
-    set pid = #{pid,jdbcType=INTEGER},
-      name = #{name,jdbcType=VARCHAR},
+    set name = #{name,jdbcType=VARCHAR},
       icon = #{icon,jdbcType=VARCHAR},
       url = #{url,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
@@ -35,4 +34,28 @@
     select id, pid, name, icon, url
     from t_permission
   </select>
+
+  <select id="getRootPermission" resultType="Permission">
+    select id, pid, name, icon, url
+    from t_permission where pid is  null
+  </select>
+
+  <select id="getChildrenPermission" parameterType="int" resultType="Permission">
+    select id, pid, name, icon, url
+    from t_permission where pid=#{id}
+  </select>
+  <select id="queryAllPermission" resultType="Permission">
+    select id, pid, name, icon, url
+    from t_permission
+  </select>
+
+  <insert id="savePermission" parameterType="Permission">
+    insert into t_permission  (pid,name,url) value (#{pid},#{name},#{url})
+  </insert>
+
+  <select id="queryPermissionIdsRoleid" parameterType="int" resultType="int">
+    select permissionid from t_role_permission where roleid=#{roleid}
+
+  </select>
+
 </mapper>

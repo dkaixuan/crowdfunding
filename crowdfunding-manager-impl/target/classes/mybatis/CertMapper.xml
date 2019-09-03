@@ -27,4 +27,22 @@
     select id, name
     from t_cert
   </select>
+
+  <select id="queryCertByAccttype" resultMap="BaseResultMap" parameterType="string">
+    select * from t_cert where id in (select certid from t_account_type_cert where accttype=#{accttype})
+  </select>
+
+  <insert id="saveMemberCert" parameterType="list">
+    insert into t_member_cert(memberid,certid,iconpath) values
+    <foreach collection="certimgs" item="item" separator=",">
+      (
+      #{item.memberid},#{item.certid},#{item.iconpath}
+      )
+    </foreach>
+
+  </insert>
+
+
+
+
 </mapper>

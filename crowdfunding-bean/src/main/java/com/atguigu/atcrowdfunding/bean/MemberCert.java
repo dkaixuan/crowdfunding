@@ -1,6 +1,10 @@
 package com.atguigu.atcrowdfunding.bean;
 
-public class MemberCert {
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.Serializable;
+
+public class MemberCert implements Serializable {
     private Integer id;
 
     private Integer memberid;
@@ -8,6 +12,19 @@ public class MemberCert {
     private Integer certid;
 
     private String iconpath;
+
+    private MultipartFile fileImg;
+
+    public MultipartFile getFileImg() {
+        return fileImg;
+    }
+
+    public void setFileImg(MultipartFile fileImg) {
+        this.fileImg = fileImg;
+    }
+
+
+
 
     public Integer getId() {
         return id;

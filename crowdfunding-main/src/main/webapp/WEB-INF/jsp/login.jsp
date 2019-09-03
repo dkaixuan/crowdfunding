@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<html lang="UTF-8">
+<html lang="zh_CN">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,22 +30,22 @@
     <form class="form-signin" role="form" action="${APP_PATH}/doLogin.do" method="post" id="loginForm">
         <h2 class="form-signin-heading"><i class="glyphicon glyphicon-log-in"></i> 用户登录</h2>
         <div class="form-group has-success has-feedback">
-            <input type="text" class="form-control" id="floginacct" name="loginacct" value="superadmin" placeholder="请输入登录账号" autofocus>
+            <input type="text" class="form-control" id="floginacct" name="loginacct"  value="zhangsan" placeholder="请输入登录账号" autofocus>
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
         </div>
         <div class="form-group has-success has-feedback">
-            <input type="password" class="form-control" id="fuserpswd" name="userpswd"  value="123" placeholder="请输入登录密码" style="margin-top:10px;">
+            <input type="password" class="form-control" id="fuserpswd" name="userpswd"  value="123"  placeholder="请输入登录密码" style="margin-top:10px;">
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         </div>
         <div class="form-group has-success has-feedback">
-            <select class="form-control" >
-                <option value="member">会员</option>
-                <option value="user" selected>管理</option>
+            <select id="ftype" class="form-control" >
+                <option value="member" selected>会员</option>
+                <option value="user" >管理</option>
             </select>
         </div>
         <div class="checkbox">
             <label>
-                <input type="checkbox" value="remember-me"> 记住我
+                <input id="rememberme" type="checkbox" value="1"> 记住我
             </label>
             <br>
             <label>
@@ -64,6 +64,8 @@
 <script>
     function dologin() {
         var flogin = $("#floginacct");
+        var fuserpswd=$("#fuserpswd")
+        var ftype=$("#ftype");
 
         if ($.trim(flogin.val()) =="") {
             layer.msg("用户名不能为空",{time:1000, icon:5, shift:6},function () {
@@ -74,9 +76,16 @@
         }
         var loadingIndex=-1;
 
+
+
+
         $.ajax({
             url: "${APP_PATH}/doLogin.do",
-            data: $("#loginForm").serialize(),
+            data: {
+                loginacct: flogin.val(),
+                userpswd : fuserpswd.val(),
+                type : ftype.val(),
+            },
             type:"post",
             beforeSend: function () {
                loadingIndex = layer.msg('处理中', {icon: 16});
@@ -87,9 +96,20 @@
                     flogin.focus();
                     flogin.val("")
                 })
+
                 }else {
+                    if("member"==result.extend.type){
+
+                        window.location.href="${APP_PATH}/member.htm"
+
+                    }else if("user"==result.extend.type){
+                        window.location.href="${APP_PATH}/main.htm"
+                    }else{
+                        layer.msg("非法请求",{time:1000, icon:5, shift:6},function () {
+                        })
+                    }
                     layer.close(loadingIndex);
-                    window.location.href="${APP_PATH}/main.htm"
+
                 }
             }
 

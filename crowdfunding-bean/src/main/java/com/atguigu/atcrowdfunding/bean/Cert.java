@@ -1,6 +1,8 @@
 package com.atguigu.atcrowdfunding.bean;
 
-public class Cert {
+import java.io.Serializable;
+
+public class Cert implements Serializable {
     private Integer id;
 
     private String name;

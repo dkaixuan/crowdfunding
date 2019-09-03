@@ -31,4 +31,17 @@
     select id, accttype, certid
     from t_account_type_cert
   </select>
+
+  <select id="queryCertAccttype" resultType="map">
+    select accttype,certid
+    from t_account_type_cert
+  </select>
+
+  <insert id="insertAcctTypeCert">
+    insert into t_account_type_cert (accttype,certid) values (#{accttype},#{certid})
+  </insert>
+
+  <delete id="deleteAcctTypeCert" >
+    delete from t_account_type_cert where accttype=#{accttype} and certid=#{certid}
+  </delete>
 </mapper>

@@ -13,6 +13,33 @@
     delete from t_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
+  <delete id="deleteUserBatch" parameterType="List">
+    delete from t_user
+    where id in
+    <foreach collection="del_id" item="id" separator="," open="(" close=")">
+        #{id}
+    </foreach>
+  </delete>
+
+  <insert id="saveUserRole">
+    insert into t_user_role (userid,roleid) values
+    <foreach collection="ids" item="roleid" separator=",">
+      (
+      #{userid},#{roleid}
+      )
+    </foreach>
+  </insert>
+
+
+  <delete id="deleteUserRole">
+      delete from t_user_role where userid=#{userid} and roleid in
+    <foreach collection="ids" item="roleid" separator="," open="(" close=")">
+      #{roleid}
+    </foreach>
+  </delete>
+
+
   <insert id="insert" parameterType="com.atguigu.atcrowdfunding.bean.User" >
     insert into t_user (id, loginacct, userpswd, 
       username, email, createtime
@@ -24,10 +51,8 @@
   <update id="updateByPrimaryKey" parameterType="com.atguigu.atcrowdfunding.bean.User" >
     update t_user
     set loginacct = #{loginacct,jdbcType=VARCHAR},
-      userpswd = #{userpswd,jdbcType=CHAR},
       username = #{username,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      createtime = #{createtime,jdbcType=CHAR}
+      email = #{email,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -35,9 +60,12 @@
     from t_user
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="queryUsers" resultMap="BaseResultMap" >
+  <select id="queryUsers" resultMap="BaseResultMap" parameterType="String">
     select id, loginacct, userpswd, username, email, createtime
     from t_user
+    <where>
+      <if test="_parameter!=null">loginacct like concat('%',#{_parameter},'%')</if>
+    </where>
   </select>
 
   <select id="queryUserlogin" parameterType="map" resultMap="BaseResultMap">
@@ -45,4 +73,19 @@
     from t_user
     where loginacct=#{loginacct} and userpswd=#{userpswd}
   </select>
+
+  <select id="queryAllRole" resultType="Role">
+    select id,name from t_role
+  </select>
+
+  <select id="queryRoleByUserId" resultType="int" parameterType="int">
+    select roleid from t_user_role where userid=#{id}
+  </select>
+
+  <select id="queryPermissionByUserId" parameterType="int" resultType="Permission">
+    select distinct p.id,p.* from t_user u,t_user_role ur,t_role_permission rp,t_permission p
+    where u.id=ur.userid and ur.roleid=rp.roleid and rp.permissionid=p.id
+    and u.id=#{id} order by p.id;
+  </select>
+
 </mapper>

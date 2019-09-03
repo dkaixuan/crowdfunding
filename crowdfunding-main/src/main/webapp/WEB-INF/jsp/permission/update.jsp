@@ -47,7 +47,7 @@
             <ol class="breadcrumb">
                 <li><a href="#">首页</a></li>
                 <li><a href="#">数据列表</a></li>
-                <li class="active">新增</li>
+                <li class="active">修改</li>
             </ol>
             <div class="panel panel-default">
                 <div class="panel-heading">表单数据<div style="float:right;cursor:pointer;" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-question-sign"></i></div></div>
@@ -55,13 +55,13 @@
                     <form role="form">
                         <div class="form-group">
                             <label for="example">许可名称</label>
-                            <input type="text" class="form-control" name="fname" id="fname" placeholder="请输入许可名称">
+                            <input type="text" class="form-control" name="fname" id="fname" value="${permission.name}" placeholder="请输入许可名称">
                         </div>
                         <div class="form-group">
                             <label for="example">许可URL</label>
-                            <input type="text" class="form-control"  name="furl" id="furl" placeholder="请输入许可URL">
+                            <input type="text" class="form-control"  name="furl" id="furl"  value="${permission.url}" placeholder="请输入许可URL">
                         </div>
-                        <button id="addBtn" type="button" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i> 新增</button>
+                        <button id="updateBtn" type="button" class="btn btn-success"><i class="glyphicon glyphicon-plus"></i>修改</button>
                         <button id="resetBtn" type="button" class="btn btn-danger"><i class="glyphicon glyphicon-refresh"></i> 重置</button>
                     </form>
                 </div>
@@ -123,24 +123,25 @@
         $("#furl").val("");
     })
 
-    $("#addBtn").click(function () {
+    $("#updateBtn").click(function () {
         var fname = $("#fname").val();
         var furl = $("#furl").val();
         var loadingIndex =-1;
         $.ajax({
-            url: "${APP_PATH}/permission/doAdd.do",
+            url: "${APP_PATH}/permission/doUpdate.do",
             type: "post",
             data: {
                 name: fname,
                 url: furl,
-                pid: "${param.id}",
+                id: "${permission.id}",
+                icon:"${permission.icon}"
             },
             beforeSend: function () {
                 loadingIndex = layer.load(2,{time:10*1000});
             },
             success: function () {
                 layer.close(loadingIndex);
-                layer.msg("添加成功", {time: 1000, icon: 1, shift: 6}, function () {
+                layer.msg("修改成功", {time: 1000, icon: 1, shift: 6}, function () {
                 }),
                 window.location.href = "${APP_PATH}/permission/index.htm"
             }

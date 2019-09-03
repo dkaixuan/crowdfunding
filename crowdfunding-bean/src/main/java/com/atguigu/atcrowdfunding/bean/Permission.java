@@ -1,5 +1,9 @@
 package com.atguigu.atcrowdfunding.bean;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Permission {
     private Integer id;
 
@@ -10,6 +14,14 @@ public class Permission {
     private String icon;
 
     private String url;
+
+    private boolean open=true;
+
+    private boolean checked;
+
+    private int level;
+
+    private List<Permission> children = new ArrayList<Permission>();
 
     public Integer getId() {
         return id;
@@ -33,6 +45,38 @@ public class Permission {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public boolean isOpen() {
+        return open;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public List<Permission> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Permission> children) {
+        this.children = children;
     }
 
     public String getIcon() {
