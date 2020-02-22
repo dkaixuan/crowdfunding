@@ -77,8 +77,6 @@
         var loadingIndex=-1;
 
 
-
-
         $.ajax({
             url: "${APP_PATH}/doLogin.do",
             data: {

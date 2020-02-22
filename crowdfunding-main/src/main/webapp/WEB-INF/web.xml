@@ -19,6 +19,9 @@
   <listener>
     <listener-class>com.atguigu.atcrowdfunding.listener.StartSystemListener</listener-class>
   </listener>
+  <listener>
+    <listener-class>com.atguigu.atcrowdfunding.listener.SessionListener</listener-class>
+  </listener>
 
   <!-- 字符编码过滤器 -->
   <filter>

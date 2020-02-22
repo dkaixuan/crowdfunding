@@ -60,7 +60,7 @@
     from t_user
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="queryUsers" resultMap="BaseResultMap" parameterType="String">
+  <select id="queryUsers" resultMap="BaseResultMap" parameterType="string">
     select id, loginacct, userpswd, username, email, createtime
     from t_user
     <where>

@@ -16,14 +16,13 @@ import java.util.Set;
 
 public class StartSystemListener implements ServletContextListener {
     @Override
-    public void contextInitialized(ServletContextEvent servletContextEvent) {
-        ServletContext application = servletContextEvent.getServletContext();
-        String contextPath = application.getContextPath();
-        application.setAttribute("APP_PATH",contextPath);
+    public void contextInitialized(ServletContextEvent sce) {
+        ServletContext servletContext = sce.getServletContext();
+        String contextPath = servletContext.getContextPath();
+        servletContext.setAttribute("APP_PATH", contextPath);
 
         //加载所有许可路径
-
-        ApplicationContext ioc = WebApplicationContextUtils.getWebApplicationContext(application);
+        ApplicationContext ioc = WebApplicationContextUtils.getWebApplicationContext(servletContext);
         PermissionService permissionService = ioc.getBean(PermissionService.class);
 
         List<Permission> permissions = permissionService.queryAllPermission();
@@ -31,11 +30,12 @@ public class StartSystemListener implements ServletContextListener {
         for (Permission permission : permissions) {
             allURIS.add("/"+permission.getUrl());
         }
-        application.setAttribute(Const.ALL_PERMISSION_URI,allURIS);
+        servletContext.setAttribute(Const.ALL_PERMISSION_URI,allURIS);
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-
+        ServletContext servletContext = servletContextEvent.getServletContext();
+        servletContext.removeAttribute("APP_PATH");
     }
 }

@@ -61,54 +61,18 @@ public class PermissionController {
 
 
 
-
-
-
-
-    //Demo1 模拟生成树
-//    @ResponseBody
-//    @RequestMapping("/loadData")
-//    public Msg loadData() {
-//        //父
-//        Permission permission = new Permission();
-//        permission.setName("系统权限菜单");
-//        permission.setOpen(true);
-//
-//
-//        //子
-//        List<Permission> children = new ArrayList<>();
-//        Permission permission1 = new Permission();
-//        permission1.setName("控制面板");
-//        Permission permission2 = new Permission();
-//        permission2.setName("权限管理");
-//
-//        children.add(permission1);
-//        children.add(permission2);
-//
-//        permission.setChildren(children);
-//
-//
-//        List<Permission> root = new ArrayList<>();
-//        root.add(permission);
-//
-//
-//        return Msg.success().add("permission",permission);
-//    }
-
-
-
     //Demo2 循环
 //    @ResponseBody
 //    @RequestMapping("/loadData")
 //    public Msg loadData() {
-//        //父
+//        //父  查一下pid=null的父节点
 //            Permission permission = permissionService.getRootPermission();
 //
 //
-//        //子
+//        //子 根据pid=null的父节点找子节点
 //            List<Permission> children = permissionService.getChildrenPermissionByPid(permission.getId());
 //
-//
+//        //
 //        permission.setChildren(children);
 //
 //
@@ -123,7 +87,7 @@ public class PermissionController {
 //        root.add(permission);
 //
 //
-//        return Msg.success().add("permission",permission);
+//        return Msg.success().add("permission",root);
 //    }
 
 
@@ -148,8 +112,11 @@ public class PermissionController {
 //    }
 //
 //    private void queryChildPermissions(Permission permission) {
+
+            //mybatis查询如果返回一个集合，结果为空时也会返回一个空集合而不是null。
 //        List<Permission> children = permissionService.getChildrenPermissionByPid(permission.getId());
 //        permission.setChildren(children);
+            //结果为空时 不会空指针异常 不会执行for循环  跳出递归
 //        for (Permission innerChildren:children) {
 //            queryChildPermissions(innerChildren);
 //        }
@@ -192,9 +159,11 @@ public class PermissionController {
         List<Permission> root = new ArrayList<>();
         List<Permission> childredPermissions = permissionService.queryAllPermission();
         Map<Integer, Permission> map = new HashMap<>();
+        //permission的id当作key
         for (Permission innerpermission : childredPermissions) {
             map.put(innerpermission.getId(), innerpermission);
         }
+
         for (Permission permission : childredPermissions) {
             Permission child=permission;
             if (child.getPid()==null) {
@@ -205,7 +174,6 @@ public class PermissionController {
             }
 
         }
-
         return Msg.success().add("permission",root);
     }
 
